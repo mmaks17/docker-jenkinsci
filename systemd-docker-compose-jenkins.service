@@ -1,0 +1,14 @@
+[Unit]
+Description=Jenkins CI: Docker Compose Application Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+WorkingDirectory=<PATH TO REPO WORKDIR>
+ExecStart=/usr/bin/docker-compose up
+ExecStop=/usr/bin/docker-compose down
+TimeoutStartSec=0
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
