@@ -1,0 +1,24 @@
+variables:
+  GIT_STRATEGY: clone
+
+
+stages:
+  - build
+
+
+image: docker:git
+
+services:
+- docker:dind
+
+build:
+  stage: build
+#  when: manual
+  tags:
+    - docker
+  script:
+    - docker login -u ${GITLAB_USER_EMAIL} -p ${REGISTRY_PASSWORD}   ${CI_REGISTRY}
+    - docker build -t  ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID} .
+    - docker build -t  ${CI_REGISTRY_IMAGE}:latest .
+    - docker push  ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID}
+    - docker push  ${CI_REGISTRY_IMAGE}:latest
